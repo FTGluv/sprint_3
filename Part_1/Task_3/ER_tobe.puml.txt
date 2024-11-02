@@ -1,0 +1,78 @@
+@startuml
+entity user {
+  *user_id
+  user_login
+  user_email
+  user_tel_number
+}
+
+entity device_model {
+  *device_model_id
+  device_model_name
+  device_vendor_name
+}
+
+entity device_state {
+  *device_state_id
+  device_state_name
+}
+
+entity user_device {
+  *user_device_id
+  user_id
+  device_model_id
+  device_state_id
+}
+
+user ||--o{ user_device
+device_model ||--o{ user_device
+device_state ||--o{ user_device
+
+entity raw_telemetry_data {
+  raw_telemetry_data_id
+  raw_telemetry_user_code
+  raw_telemetry_device_model
+  raw_telemetry_state
+  raw_telemetry_value
+  raw_telemetry_type
+}
+
+entity telemetry_type {
+  telemetry_type_id
+  telemetry_type_name
+}
+
+entity clean_telemetry_data {
+  *clean_telemetry_data_id
+  clean_telemetry_user_id
+  clean_telemetry_device_model_id
+  clean_telemetry_state_id
+  clean_telemetry_value
+  clean_telemetry_type_id
+}
+
+clean_telemetry_data }o--|| user
+clean_telemetry_data }o--|| device_model
+clean_telemetry_data }o--|| device_state
+clean_telemetry_data }o--|| telemetry_type
+
+entity change_state_flow_configuration {
+  *flow_id
+  flow_description
+  flow_command
+  flow_device_model_id
+}
+
+change_state_flow_configuration }o--|| device_model
+
+entity change_state_flow_action {
+  *action_id
+  state_flow_id
+  action_name
+  action_script
+  action_order_num
+}
+
+change_state_flow_action }|--|| change_state_flow_configuration
+
+@enduml
