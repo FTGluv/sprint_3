@@ -1,0 +1,13 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(user, "House owner")
+System(smart_home, "Smart Home System")
+System_Ext(device, "Smart device")
+
+Rel(user, smart_home, "View temp", "HTTPS")
+Rel(user, smart_home, "Change heat level", "HTTPS")
+Rel(smart_home, device, "Request temp")
+Rel(smart_home, device, "Change heat level command")
+
+@enduml

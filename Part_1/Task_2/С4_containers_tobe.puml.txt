@@ -1,0 +1,58 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(user, "House owner")
+
+Container_Boundary(smart_home, "Smart Home System") {
+  Container(web_frontend, "Smart home web application")
+  Container(devices_management, "Device management microservice")
+  Container(devices_management_db, "Device management db")
+
+  Container(devices_service_controller, "Device management controller - service level - microservice")
+  Container(devices_service_controller_db, "Device management controller - service level - db")
+
+  Container(integration_adapter, "Device integration adapter - microservice")
+  Container(stat_storage, "Device statistics storage - microservice")
+  Container(stat_storage_db, "Device statistics storage - db")
+
+  Container(stat_gathering, "Device statistics gathering controller - microservice")
+  Container(stat_gathering_db, "Device statistics gathering controller - db")
+
+  Container(api_gateway, "API Gateway")
+  Container(kafka, "Kafka provider")
+}
+
+System_Ext(device, "Smart device")
+
+
+
+
+Rel(device, kafka, "Push device event/stat")
+Rel(stat_gathering, kafka, "Collect/clean device stat events")
+Rel(stat_gathering, api_gateway, "Send cleaned events/stat for storing")
+Rel(api_gateway, stat_storage, "Send cleaned events/stat for storing")
+Rel(web_frontend, api_gateway, "View devices state/stat")
+Rel(api_gateway, stat_storage, "View devices state/stat")
+
+BiRel(devices_management, devices_management_db, "Store/select data")
+BiRel(devices_service_controller, devices_service_controller_db, "Store/select data")
+BiRel(stat_storage, stat_storage_db, "Store/select data")
+BiRel(stat_gathering, stat_gathering_db, "Store/select data")
+
+Rel(user, api_gateway, "View stat/device state", "HTTPS")
+Rel(api_gateway, web_frontend, "View stat/device state", "HTTPS")
+
+Rel(user, api_gateway, "Change device state", "HTTPS")
+Rel(api_gateway, web_frontend, "Change device state", "HTTPS")
+Rel(web_frontend, api_gateway, "Change device state", "HTTPS")
+Rel(api_gateway, devices_management, "Change device state", "HTTPS")
+
+Rel(devices_management, api_gateway, "Activate changes in device state")
+Rel(api_gateway, devices_service_controller, "Activate changes in device state")
+
+Rel(devices_service_controller, api_gateway, "Send command to device")
+Rel(api_gateway, integration_adapter, "Send command to device")
+
+Rel(integration_adapter, device, "Send command to device - device level protocol")
+
+@enduml

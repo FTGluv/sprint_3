@@ -1,0 +1,19 @@
+@startuml
+class Device_State_Change_Controller {
+  void apply_changes(params)
+  void store_transaction(params)
+}
+
+class State_Change_Handler {
+  void handle_device_state_change(params)
+}
+
+class Handlers_Cache {
+  State_Change_Handler getHandler(type_of_operation)
+}
+
+Device_State_Change_Controller --|> State_Change_Handler
+Device_State_Change_Controller --|> Handlers_Cache
+Handlers_Cache -- State_Change_Handler
+
+@enduml
