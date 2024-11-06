@@ -1,0 +1,149 @@
+openapi: 3.0.3
+
+info:
+  title: User Device API 1.0
+  description:
+    User Device API
+  version: '1.0'
+paths:
+  /user-device:
+    put:
+      requestBody:
+        description: Update existing user-device
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User_Device'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User_Device_Full'          
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: User-device not found
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  format: int64
+                device_model_id:
+                  type: integer
+                  format: int64
+                device_state_id:
+                  type: integer
+                  format: int64  
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User_Device_Full'       
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+  /user-device/find:
+    get:
+      parameters:
+        - name: user_id
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User_Device_Full'          
+        '400':
+          description: Invalid search parameters
+  /user-device/{user_device_id}:
+    get:
+      description: Get info about a particular User device
+      parameters:
+        - name: user_device_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User_Device_Full'         
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: User device not found
+    delete:
+      description: Delete user device
+      parameters:
+        - name: user_device_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation       
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: User device not found
+components:
+  schemas:
+    User_Device_Full:
+      type: object
+      properties:
+        user_device_id:
+          type: integer
+          format: int64
+        user_id:
+          type: integer
+          format: int64
+        device_model_id:
+          type: integer
+          format: int64
+        device_model_name:
+          type: string
+        device_state_id:
+          type: integer
+          format: int64
+        device_state_name:
+          type: string
+    User_Device:
+      type: object
+      properties:
+        user_device_id:
+          type: integer
+          format: int64
+        user_id:
+          type: integer
+          format: int64
+        device_model_id:
+          type: integer
+          format: int64
+        device_state_id:
+          type: integer
+          format: int64
