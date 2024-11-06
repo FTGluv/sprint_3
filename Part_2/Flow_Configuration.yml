@@ -1,0 +1,183 @@
+openapi: 3.0.3
+
+info:
+  title: Configuration flow API 1.0
+  description:
+    Configuration flow API
+  version: '1.0'
+paths:
+  /flow:
+    put:
+      requestBody:
+        description: Update existing configuration flow
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Flow_Configuration'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Flow_Configuration_Full'          
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Configuration flow not found
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Flow_Configuration_Create' 
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Flow_Configuration_Full'       
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+  /flow/find:
+    get:
+      parameters:
+        - name: device_model_id
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Flow_Configuration_Full'          
+        '400':
+          description: Invalid search parameters
+  /flow/{flow_id}:
+    get:
+      description: Get info about a particular configuration flow
+      parameters:
+        - name: flow_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Flow_Configuration_Full'         
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Configuration flow not found
+    delete:
+      description: Delete configuration flow
+      parameters:
+        - name: flow_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation       
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Configuration flow not found
+components:
+  schemas:
+    Flow_Configuration_Full:
+      type: object
+      properties:
+        flow_id:
+          type: integer
+          format: int64
+        flow_description:
+          type: string
+        flow_command:
+          type: string
+        flow_device_model_id:
+          type: integer
+          format: int64
+        flow_device_model_name:
+          type: string
+        actions:
+          type: array
+          items:
+            type: object
+            properties:
+              action_id:
+                type: integer
+                format: int64
+              action_name:
+                type: string
+              action_script:
+                type: string
+              action_order_num:
+                type: integer
+    Flow_Configuration:
+      type: object
+      properties:
+        flow_id:
+          type: integer
+          format: int64
+        flow_description:
+          type: string
+        flow_command:
+          type: string
+        flow_device_model_id:
+          type: integer
+          format: int64
+        actions:
+          type: array
+          items:
+            type: object
+            properties:
+              action_id:
+                type: integer
+                format: int64
+              action_name:
+                type: string
+              action_script:
+                type: string
+              action_order_num:
+                type: integer
+    Flow_Configuration_Create:
+      type: object
+      properties:
+        flow_description:
+          type: string
+        flow_command:
+          type: string
+        flow_device_model_id:
+          type: integer
+          format: int64
+        actions:
+          type: array
+          items:
+            type: object
+            properties:
+              action_name:
+                type: string
+              action_script:
+                type: string
+              action_order_num:
+                type: integer
+              
