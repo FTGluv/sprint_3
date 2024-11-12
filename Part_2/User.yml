@@ -1,12 +1,12 @@
 openapi: 3.0.3
 
 info:
-  title: User API 1.0
+  title: Users API 1.0
   description:
-    User API
+    Users API
   version: '1.0'
 paths:
-  /user:
+  /users:
     put:
       requestBody:
         description: Update existing user
@@ -51,7 +51,6 @@ paths:
           description: Invalid input
         '422':
           description: Validation exception
-  /user/find:
     get:
       parameters:
         - name: user_login
@@ -75,7 +74,7 @@ paths:
                   $ref: '#/components/schemas/User'          
         '400':
           description: Invalid search parameters
-  /user/{user_id}:
+  /users/{user_id}:
     get:
       description: Get info about a particular User
       parameters:

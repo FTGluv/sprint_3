@@ -1,12 +1,12 @@
 openapi: 3.0.3
 
 info:
-  title: Configuration flow API 1.0
+  title: Configuration flows API 1.0
   description:
-    Configuration flow API
+    Configurations flow API
   version: '1.0'
 paths:
-  /flow:
+  /flows:
     put:
       requestBody:
         description: Update existing configuration flow
@@ -44,7 +44,6 @@ paths:
           description: Invalid input
         '422':
           description: Validation exception
-  /flow/find:
     get:
       parameters:
         - name: device_model_id
@@ -64,7 +63,7 @@ paths:
                   $ref: '#/components/schemas/Flow_Configuration_Full'          
         '400':
           description: Invalid search parameters
-  /flow/{flow_id}:
+  /flows/{flow_id}:
     get:
       description: Get info about a particular configuration flow
       parameters:

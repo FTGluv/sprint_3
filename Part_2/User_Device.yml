@@ -1,12 +1,12 @@
 openapi: 3.0.3
 
 info:
-  title: User Device API 1.0
+  title: User Devices API 1.0
   description:
-    User Device API
+    User Devices API
   version: '1.0'
 paths:
-  /user-device:
+  /user-devices:
     put:
       requestBody:
         description: Update existing user-device
@@ -54,7 +54,6 @@ paths:
           description: Invalid input
         '422':
           description: Validation exception
-  /user-device/find:
     get:
       parameters:
         - name: user_id
@@ -74,7 +73,7 @@ paths:
                   $ref: '#/components/schemas/User_Device_Full'          
         '400':
           description: Invalid search parameters
-  /user-device/{user_device_id}:
+  /user-devices/{user_device_id}:
     get:
       description: Get info about a particular User device
       parameters:
